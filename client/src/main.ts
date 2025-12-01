@@ -67,4 +67,4 @@ window.onresize = function () {
     window.editor.layout();
 }
 
-editor.getAction('editor.action.formatDocument').run()
+window.editor.getAction('editor.action.formatDocument').run()

@@ -3685,7 +3685,7 @@ var require_socketSupport = __commonJS({
     var net_1 = require("net");
     var messageReader_1 = require_messageReader();
     var messageWriter_1 = require_messageWriter();
-    function createClientSocketTransport(port, encoding = "utf-8") {
+    function createClientSocketTransport(port2, encoding = "utf-8") {
       let connectResolve;
       let connected = new Promise((resolve2, _reject) => {
         connectResolve = resolve2;
@@ -3699,7 +3699,7 @@ var require_socketSupport = __commonJS({
           ]);
         });
         server2.on("error", reject);
-        server2.listen(port, "127.0.0.1", () => {
+        server2.listen(port2, "127.0.0.1", () => {
           server2.removeListener("error", reject);
           resolve2({
             onConnected: () => {
@@ -3710,8 +3710,8 @@ var require_socketSupport = __commonJS({
       });
     }
     exports2.createClientSocketTransport = createClientSocketTransport;
-    function createServerSocketTransport(port, encoding = "utf-8") {
-      const socket = net_1.createConnection(port, "127.0.0.1");
+    function createServerSocketTransport(port2, encoding = "utf-8") {
+      const socket = net_1.createConnection(port2, "127.0.0.1");
       return [
         new messageReader_1.SocketMessageReader(socket, encoding),
         new messageWriter_1.SocketMessageWriter(socket, encoding)
@@ -7935,7 +7935,7 @@ var require_main2 = __commonJS({
       ];
     }
     exports2.createServerPipeTransport = createServerPipeTransport;
-    function createClientSocketTransport(port, encoding = "utf-8") {
+    function createClientSocketTransport(port2, encoding = "utf-8") {
       let connectResolve;
       const connected = new Promise((resolve2, _reject) => {
         connectResolve = resolve2;
@@ -7949,7 +7949,7 @@ var require_main2 = __commonJS({
           ]);
         });
         server2.on("error", reject);
-        server2.listen(port, "127.0.0.1", () => {
+        server2.listen(port2, "127.0.0.1", () => {
           server2.removeListener("error", reject);
           resolve2({
             onConnected: () => {
@@ -7960,8 +7960,8 @@ var require_main2 = __commonJS({
       });
     }
     exports2.createClientSocketTransport = createClientSocketTransport;
-    function createServerSocketTransport(port, encoding = "utf-8") {
-      const socket = net_1.createConnection(port, "127.0.0.1");
+    function createServerSocketTransport(port2, encoding = "utf-8") {
+      const socket = net_1.createConnection(port2, "127.0.0.1");
       return [
         new SocketMessageReader(socket, encoding),
         new SocketMessageWriter(socket, encoding)
@@ -12030,7 +12030,7 @@ var require_main5 = __commonJS({
     exports2.createConnection = createConnection2;
     function _createConnection(input, output, options, factories) {
       if (!input && !output && process.argv.length > 2) {
-        let port = void 0;
+        let port2 = void 0;
         let pipeName = void 0;
         let argv = process.argv.slice(2);
         for (let i = 0; i < argv.length; i++) {
@@ -12044,7 +12044,7 @@ var require_main5 = __commonJS({
             output = process.stdout;
             break;
           } else if (arg === "--socket") {
-            port = parseInt(argv[i + 1]);
+            port2 = parseInt(argv[i + 1]);
             break;
           } else if (arg === "--pipe") {
             pipeName = argv[i + 1];
@@ -12052,7 +12052,7 @@ var require_main5 = __commonJS({
           } else {
             var args = arg.split("=");
             if (args[0] === "--socket") {
-              port = parseInt(args[1]);
+              port2 = parseInt(args[1]);
               break;
             } else if (args[0] === "--pipe") {
               pipeName = args[1];
@@ -12060,8 +12060,8 @@ var require_main5 = __commonJS({
             }
           }
         }
-        if (port) {
-          let transport = node_1.createServerSocketTransport(port);
+        if (port2) {
+          let transport = node_1.createServerSocketTransport(port2);
           input = transport[0];
           output = transport[1];
         } else if (pipeName) {
@@ -12114,7 +12114,7 @@ var launch = (socket) => {
   const reader = new rpc.WebSocketMessageReader(socket);
   const writer = new rpc.WebSocketMessageWriter(socket);
   const socketConnection = server.createConnection(reader, writer, () => socket.dispose());
-  const serverConnection = server.createServerProcess("Lua", (0, import_path.resolve)(process.cwd(), "lua-language-server/.bin/Linux/lua-language-server"));
+  const serverConnection = server.createServerProcess("LuaU", (0, import_path.resolve)(process.cwd(), "./luau-lsp.exe"), ["lsp", "--docs=./en-us.json", "--definitions=./globalTypes.d.lua", "--base-luaurc=./.luaurc"]);
   server.forward(socketConnection, serverConnection, (message) => {
     if (rpc.isRequestMessage(message) && isInitializeRequest(message)) {
       message.params.processId = process.pid;
@@ -12124,7 +12124,8 @@ var launch = (socket) => {
 };
 
 // src/main.ts
-new import_websocket_server.default({ port: 8080 }).on("connection", (webSocket) => {
+var port = 8080;
+new import_websocket_server.default({ port }).on("connection", (webSocket) => {
   const socket = {
     send: (content) => webSocket.send(content, (error) => {
       if (error)
