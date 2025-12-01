@@ -12114,7 +12114,7 @@ var launch = (socket) => {
   const reader = new rpc.WebSocketMessageReader(socket);
   const writer = new rpc.WebSocketMessageWriter(socket);
   const socketConnection = server.createConnection(reader, writer, () => socket.dispose());
-  const serverConnection = server.createServerProcess("LuaU", (0, import_path.resolve)(process.cwd(), "./luau-lsp.exe"), ["lsp", "--docs=./en-us.json", "--definitions=./globalTypes.d.lua", "--base-luaurc=./.luaurc"]);
+  const serverConnection = server.createServerProcess("LuaU", (0, import_path.resolve)(process.cwd(), "./luau-lsp"), ["lsp", "--docs=./en-us.json", "--definitions=./globalTypes.d.lua", "--base-luaurc=./.luaurc"]);
   server.forward(socketConnection, serverConnection, (message) => {
     if (rpc.isRequestMessage(message) && isInitializeRequest(message)) {
       message.params.processId = process.pid;
