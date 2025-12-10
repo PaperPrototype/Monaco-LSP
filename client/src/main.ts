@@ -35,8 +35,6 @@ declare global {
     }
 }
 
-const editor = window.editor
-
 window.editor = monaco.editor.create(
     document.querySelector('#editor-container')!,
     {
